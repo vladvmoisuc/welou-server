@@ -44,7 +44,7 @@ const getRandomUser = async (req, res, _next) => {
               .concat(id)
               .map((id) => mongoose.Types.ObjectId(id)),
           },
-          interest: user.interest,
+          gender: user.interest,
         },
       },
       {
