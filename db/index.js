@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const connect = async () => {
   try {
     await mongoose.connect(
-      `mongodb+srv://root:${process.env.DATABASE_PASSWORD}@cluster0.v6uxj.gcp.mongodb.net/<welou>?retryWrites=true&w=majority`,
+      `mongodb+srv://welou:${process.env.DATABASE_PASSWORD}@cluster0.v6uxj.gcp.mongodb.net/<welou>?retryWrites=true&w=majority`,
       {
         useNewUrlParser: true,
         useUnifiedTopology: true,
