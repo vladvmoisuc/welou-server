@@ -35,5 +35,6 @@ app.get('/*', (req, res) => {
 const port = process.env.PORT || 3000;
 
 app.listen(port, function () {
+  console.log(__dirname);
   console.log(`Server started to listen on port ${port}.`);
 });
