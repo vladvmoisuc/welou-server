@@ -1,7 +1,8 @@
 const googleFirebase = require('../firebase');
 const { v4: uuidv4 } = require('uuid');
 const { createMessage } = require('../utils/chat');
-const { merge } = require('../routes/chat');
+const User = require('../models/user');
+const mongoose = require('mongoose');
 
 const firebase = googleFirebase();
 const database = firebase.firestore();
@@ -9,7 +10,6 @@ const database = firebase.firestore();
 const getChat = async (req, res, next) => {
   try {
     const { chatId } = req.query;
-    console.log({ chatId });
     const doc = await database.collection('chats').doc(chatId).get();
 
     res.status(201).json(doc.data());
@@ -44,7 +44,12 @@ const editChat = async (req, res, next) => {
 
 const leaveChat = async (req, res, next) => {
   try {
-    const { chatId, userId } = req.body;
+    const { chatId, userId, partnerId } = req.body;
+
+    const user = await User.findOne({ _id: mongoose.Types.ObjectId(userId) });
+    const partner = await User.findOne({
+      _id: mongoose.Types.ObjectId(partnerId),
+    });
 
     await database.collection('chats').doc(chatId).set(
       {
@@ -52,6 +57,11 @@ const leaveChat = async (req, res, next) => {
       },
       { merge: true }
     );
+
+    user.previousConnections.push(partnerId);
+    partner.previousConnections.push(userId);
+    await user.save();
+    await partner.save();
 
     res.status(201).json('Modified.');
   } catch (error) {

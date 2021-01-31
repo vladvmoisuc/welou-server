@@ -9,6 +9,13 @@ const connect = async () => {
         useUnifiedTopology: true,
       }
     );
+    // await mongoose.connect(
+    //   `mongodb+srv://welou:rXVRIwco1GauTTUb@cluster0.v6uxj.gcp.mongodb.net/<welou>?retryWrites=true&w=majority`,
+    //   {
+    //     useNewUrlParser: true,
+    //     useUnifiedTopology: true,
+    //   }
+    // );
     console.log('Connected to MongoDB.');
   } catch (error) {
     console.log('Could not connect to MongoDB because:', error);

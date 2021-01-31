@@ -40,7 +40,7 @@ const getRandomUser = async (req, res, _next) => {
             $nin: user.rejectedPeople
               .concat(user.chatRequests)
               .concat(user.chatInvites)
-              .concat(user.previousConnections)
+              // .concat(user.previousConnections)
               .concat(id)
               .map((id) => mongoose.Types.ObjectId(id)),
           },
