@@ -34,9 +34,9 @@ const sendPushNotification = async ({
       body: message,
     },
     webpush: {
-      // fcm_options: {
-      //   link
-      // },
+      fcm_options: {
+        link: 'https://welou-heroku.herokuapp.com',
+      },
       notification: {
         icon,
       },
