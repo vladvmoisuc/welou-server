@@ -39,6 +39,7 @@ const sendPushNotification = async ({
       },
       notification: {
         icon,
+        click_action: 'https://welou-heroku.herokuapp.com',
       },
     },
     data: {
