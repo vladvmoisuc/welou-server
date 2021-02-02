@@ -74,15 +74,7 @@ const createChat = async (req, res, next) => {
   try {
     const { senderId, receiverId } = req.body;
     const documentId = uuidv4();
-    console.log({
-      id: documentId,
-      createdAt: +Date.now(),
-      editedAt: +Date.now(),
-      deletedAt: +Date.now(),
-      matches: { [senderId]: false, [receiverId]: false },
-      usersIds: [senderId, receiverId],
-      hasLeft: null,
-    });
+
     await database
       .collection('chats')
       .doc(documentId)
@@ -105,7 +97,6 @@ const createChat = async (req, res, next) => {
 
     res.status(201).json(documentId);
   } catch (error) {
-    console.log(error);
     res.status(400).json(error);
   }
 };
