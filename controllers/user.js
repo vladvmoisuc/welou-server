@@ -13,6 +13,16 @@ const createUser = (req, res, next) => {
   }
 };
 
+const deleteUser = async (req, res, next) => {
+  try {
+    await User.remove({ facebookId: req.body.id });
+
+    res.status(204).json('Deleted.');
+  } catch (error) {
+    res.status(400).json(error);
+  }
+};
+
 const getUser = async (req, res, next) => {
   try {
     const { facebookId, id } = req.query;
@@ -208,4 +218,5 @@ module.exports = {
   acceptRequest,
   declineRequest,
   updateUser,
+  deleteUser,
 };

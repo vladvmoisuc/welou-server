@@ -3,6 +3,7 @@ const router = express.Router();
 const userController = require('../controllers/user');
 
 router.post('/', userController.createUser);
+router.post('/delete', userController.deleteUser);
 router.post('/update', userController.updateUser);
 router.get('/', userController.getUser);
 router.get('/random', userController.getRandomUser);
