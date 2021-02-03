@@ -5,19 +5,6 @@ const initialize = () => {
     credential: admin.credential.applicationDefault(),
     databaseURL: 'https://chat-efca7.firebaseio.com',
   });
-
-  //   admin
-  //     .auth()
-  //     .getUser('KttKMjYghaMpvd1qjtEVYJeyHEq2')
-  //     .then((userRecord) => {
-  //       // See the UserRecord reference doc for the contents of userRecord.
-  //       console.log(
-  //         `Successfully fetched user data: ${JSON.stringify(userRecord.toJSON())}`
-  //       );
-  //     })
-  //     .catch((error) => {
-  //       console.log('Error fetching user data:', error);
-  //     });
 };
 
 const sendPushNotification = async ({
