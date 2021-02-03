@@ -13,7 +13,7 @@ db.connect();
 fcm.initialize();
 
 // Middlewares
-// app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(cors());
 app.use(
   session({
@@ -28,12 +28,12 @@ app.use(helmet());
 
 app.use('/api', routes);
 
-// app.get('/*', (req, res) => {
-//   res.sendFile(path.join(__dirname, 'build/index.html'));
-// });
+app.get('/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build/index.html'));
+});
 
-// const port = process.env.PORT || 3000;
-const port = 5000;
+const port = process.env.PORT || 3000;
+// const port = 5000;
 
 app.listen(port, function () {
   console.log(`Server started to listen on port ${port}.`);
