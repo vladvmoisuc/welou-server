@@ -125,8 +125,8 @@ const getMessages = async (req, res, next) => {
       .collection('chats')
       .doc(chatId)
       .collection('messages')
-      .limit(50)
-      .orderBy('createdAt', 'asc')
+      .limit(30)
+      .orderBy('createdAt', 'desc')
       .get();
 
     const messages = [];
