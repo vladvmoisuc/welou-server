@@ -9,6 +9,7 @@ const connect = async () => {
         useUnifiedTopology: true,
       }
     );
+
     console.log('Connected to MongoDB.');
   } catch (error) {
     console.log('Could not connect to MongoDB because:', error);

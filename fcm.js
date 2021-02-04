@@ -34,14 +34,14 @@ const sendPushNotification = async ({
     },
     token,
   };
-  console.log(message);
 
   try {
     const response = await admin.messaging().send(message);
 
     console.log('Successfully sent message:', response);
   } catch (error) {
-    console.log('Error sending message:', error);
+    console.log('Error sending message:');
+    throw error;
   }
 };
 
