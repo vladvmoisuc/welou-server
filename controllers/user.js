@@ -74,6 +74,11 @@ const sendRequest = async (req, res, _next) => {
     const user = await User.findOne({
       _id: current_user_id,
     });
+
+    if (user.chatInvites.includes(invited_user_id)) {
+      return res.status(304).json({});
+    }
+
     user.chatRequests.push(invited_user_id);
 
     const invitedUser = await User.findOne({
