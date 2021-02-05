@@ -59,9 +59,12 @@ const leaveChat = async (req, res, next) => {
     );
 
     user.previousConnections.push(partnerId);
-    partner.previousConnections.push(userId);
     await user.save();
-    await partner.save();
+
+    if (partner) {
+      partner.previousConnections.push(userId);
+      await partner.save();
+    }
 
     res.status(201).json('Modified.');
   } catch (error) {
