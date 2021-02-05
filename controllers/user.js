@@ -29,10 +29,6 @@ const getUser = async (req, res, next) => {
     if (facebookId) {
       const user = await User.findOne({ facebookId });
 
-      if (!Object.keys(user).length) {
-        res.json({ hasMissingUser: true });
-      }
-
       res.json(user);
     } else if (id) {
       const user = await User.findOne({ _id: id });
