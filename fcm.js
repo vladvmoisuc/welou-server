@@ -41,7 +41,7 @@ const sendPushNotification = async ({
 
     console.log('Successfully sent message:', response);
   } catch (error) {
-    console.log('Error sending message:');
+    console.log('Error sending message: ', error);
     throw error;
   }
 };
