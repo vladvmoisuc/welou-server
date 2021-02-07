@@ -36,6 +36,7 @@ const sendPushNotification = async ({
   };
 
   try {
+    console.log(message);
     const response = await admin.messaging().send(message);
 
     console.log('Successfully sent message:', response);

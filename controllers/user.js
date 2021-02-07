@@ -77,7 +77,9 @@ const sendRequest = async (req, res, _next) => {
     });
 
     if (user.chatInvites.includes(invited_user_id)) {
-      return res.status(304).json({});
+      return res
+        .status(304)
+        .json('Ai deja o invitație de la acest utilizator.');
     }
 
     user.chatRequests.push(invited_user_id);
@@ -117,17 +119,19 @@ const getNotifications = async (req, res, _next) => {
 
     const user = await User.findOne({ _id: mongoose.Types.ObjectId(id) });
     const notifications = await Promise.all(
-      user.chatInvites.map(async (id) => {
-        const { _id, firstName, lastName, avatar } = await User.findOne({
-          _id: mongoose.Types.ObjectId(id),
-        });
-        return {
-          _id,
-          firstName,
-          lastName,
-          avatar,
-        };
-      })
+      user.chatInvites
+        .filter((id, index, array) => index === array.indexOf(id))
+        .map(async (id) => {
+          const { _id, firstName, lastName, avatar } = await User.findOne({
+            _id: mongoose.Types.ObjectId(id),
+          });
+          return {
+            _id,
+            firstName,
+            lastName,
+            avatar,
+          };
+        })
     );
 
     res.json(notifications);
