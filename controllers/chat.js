@@ -95,7 +95,7 @@ const createChat = async (req, res, next) => {
       senderId,
       receiverId,
       type: 'initialization',
-      text: 'Faceți cunoștiință și jucați-vă frumos. Conversație plăcută!',
+      text: 'Faceți cunoștință și jucați-vă frumos. Conversație plăcută!',
     });
 
     res.status(201).json(documentId);
