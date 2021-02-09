@@ -116,15 +116,17 @@ const rejectUser = async (req, res, _next) => {
 const getNotifications = async (req, res, _next) => {
   try {
     const { id } = req.query;
-
     const user = await User.findOne({ _id: mongoose.Types.ObjectId(id) });
     const notifications = await Promise.all(
       user.chatInvites
         .filter((id, index, array) => index === array.indexOf(id))
         .map(async (id) => {
-          const { _id, firstName, lastName, avatar } = await User.findOne({
+          const user = await User.findOne({
             _id: mongoose.Types.ObjectId(id),
           });
+          if (!user) return;
+          const { _id, firstName, lastName, avatar } = user;
+
           return {
             _id,
             firstName,
@@ -132,6 +134,7 @@ const getNotifications = async (req, res, _next) => {
             avatar,
           };
         })
+        .filter((user) => !!user)
     );
 
     res.json(notifications);
