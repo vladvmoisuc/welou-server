@@ -6,6 +6,8 @@
   "homepage": ".",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon app.js",
+    "prestart": "cd client && npm install && npm run build",
     "start": "nodemon app.js"
   },
   "keywords": [],

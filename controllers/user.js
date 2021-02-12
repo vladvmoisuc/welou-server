@@ -1,11 +1,11 @@
 const User = require('../models/user');
 const mongoose = require('mongoose');
 
-const createUser = (req, res, next) => {
+const createUser = (req, res, _next) => {
   try {
     const user = new User(req.body);
 
-    user.save((error, user) => {
+    user.save((_error, user) => {
       res.status(201).json(user);
     });
   } catch (error) {
@@ -13,7 +13,7 @@ const createUser = (req, res, next) => {
   }
 };
 
-const deleteUser = async (req, res, next) => {
+const deleteUser = async (req, res, _next) => {
   try {
     await User.remove({ facebookId: req.body.id });
 
@@ -23,23 +23,26 @@ const deleteUser = async (req, res, next) => {
   }
 };
 
-const getUser = async (req, res, next) => {
+const getUser = async (req, res, _next) => {
   try {
     const { facebookId, id } = req.query;
-    if (facebookId) {
-      const user = await User.findOne({ facebookId });
+
+    if (facebookId || id) {
+      const searchQuery = facebookId
+        ? { facebookId }
+        : { _id: mongoose.Types.ObjectId(id) };
+      const user = await User.findOne(searchQuery);
 
       res.json(user);
-    } else if (id) {
-      const user = await User.findOne({ _id: id });
-      res.json(user);
+    } else {
+      throw new Error('Invalid payload.');
     }
   } catch (error) {
     res.status(400).json(error);
   }
 };
 
-const getRandomUser = async (req, res, _next) => {
+const getRandomMatch = async (req, res, _next) => {
   try {
     const { id } = req.query;
 
@@ -71,28 +74,31 @@ const getRandomUser = async (req, res, _next) => {
 
 const sendRequest = async (req, res, _next) => {
   try {
-    const { current_user_id, invited_user_id } = req.body;
+    const { senderId, receiverId } = req.body;
+
     const user = await User.findOne({
-      _id: current_user_id,
+      _id: mongoose.Types.ObjectId(senderId),
     });
 
-    if (user.chatInvites.includes(invited_user_id)) {
+    if (user.chatInvites.includes(receiverId)) {
       return res
         .status(304)
-        .json('Ai deja o invitație de la acest utilizator.');
+        .json(
+          "You can't send an invitation to this user because he already sent you an invite."
+        );
     }
 
-    user.chatRequests.push(invited_user_id);
+    user.chatRequests.push(receiverId);
 
     const invitedUser = await User.findOne({
-      _id: invited_user_id,
+      _id: receiverId,
     });
-    invitedUser.chatInvites.push(current_user_id);
+    invitedUser.chatInvites.push(senderId);
 
     await user.save();
     await invitedUser.save();
 
-    res.status(204).json('Saved.');
+    res.status(202).json('Saved.');
   } catch (error) {
     res.status(400).json(error);
   }
@@ -100,11 +106,11 @@ const sendRequest = async (req, res, _next) => {
 
 const rejectUser = async (req, res, _next) => {
   try {
-    const { current_user_id, rejected_user_id } = req.body;
+    const { userId, rejectedUserId } = req.body;
     const user = await User.findOne({
-      _id: current_user_id,
+      _id: userId,
     });
-    user.rejectedPeople.push(rejected_user_id);
+    user.rejectedPeople.push(rejectedUserId);
 
     const updatedUser = await user.save();
     res.json(updatedUser);
@@ -116,6 +122,7 @@ const rejectUser = async (req, res, _next) => {
 const getNotifications = async (req, res, _next) => {
   try {
     const { id } = req.query;
+
     const user = await User.findOne({ _id: mongoose.Types.ObjectId(id) });
     const notifications = await Promise.all(
       user.chatInvites
@@ -224,7 +231,7 @@ const updateUser = async (req, res, _next) => {
 module.exports = {
   createUser,
   getUser,
-  getRandomUser,
+  getRandomMatch,
   rejectUser,
   sendRequest,
   getNotifications,

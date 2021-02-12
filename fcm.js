@@ -3,18 +3,10 @@ var admin = require('firebase-admin');
 const initialize = () => {
   admin.initializeApp({
     credential: admin.credential.applicationDefault(),
-    databaseURL: 'https://chat-efca7.firebaseio.com',
   });
 };
 
-const sendPushNotification = async ({
-  token,
-  title,
-  message,
-  link,
-  icon,
-  type,
-}) => {
+const sendPushNotification = async ({ token, title, message, icon, type }) => {
   var message = {
     notification: {
       title,
@@ -22,11 +14,11 @@ const sendPushNotification = async ({
     },
     webpush: {
       fcm_options: {
-        link: 'https://welou-heroku.herokuapp.com',
+        link: process.env.DOMAIN,
       },
       notification: {
         icon,
-        click_action: 'https://welou-heroku.herokuapp.com',
+        click_action: process.env.DOMAIN,
       },
     },
     data: {
